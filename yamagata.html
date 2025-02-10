@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>yasunobuidei</title>
+        <link rel="icon" href="favicon.png" type="image/png">
+        <script>
+            (function(d) {
+              var config = {
+                kitId: 'kpf7kgn',
+                scriptTimeout: 3000,
+                async: true
+              },
+              h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+            })(document);
+          </script>
+        <style>
+            body {
+    font-family: "游ゴシック", "Yu Gothic", "Meiryo", "Noto Sans JP", sans-serif;
+}
+body {
+    font-family: "Arial", "Helvetica", "sans-serif";
+}
+            * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+
+    header {
+      font-family: 'Arial', sans-serif;
+      background-image: url('https://via.placeholder.com/1500'); /* 背景画像 */
+      background-size: cover;
+      background-position: center;
+      height: 00vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px; /* ヘッダーの高さ */
+    background-color: transparent; /* 背景色 */
+    display: flex;
+    padding: 0 20px;
+    z-index: 1000; 
+    }
+
+    /* メニューコンテナ */
+    .menu-container {
+      position: fixed;
+      top: 5%;
+      left: 0%;
+      width: 346px;
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(5px);
+      border-radius: 5.3px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15), 0 -3px 6px rgba(0, 0, 0, 0.15);
+      transition: height 0.4s ease-in-out, backdrop-filter 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+      overflow: hidden;
+      height: 42px;
+      text-align: center;
+      position: relative;
+      margin-top: 20px;
+    }
+
+    .menu-container.expanded {
+      height: auto;
+      padding-bottom: 20px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 -4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* ヘッダーエリア */
+    .menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 42px;
+      background-color: white;
+      border-radius: 5.3px 5.3px 0 0;
+      position: relative;
+    }
+
+    /* 左：ロゴ */
+    .logo {
+      position: absolute;
+      top: 14.7px;
+      left: 14.7px;
+      width: 12.5px;
+      height: 12.5px;
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* 中央：タイトル */
+    .title {
+      font-size: 12px;
+      font-weight: normal;
+      text-align: center;
+      font-family: sans-serif;
+    }
+
+    /* 右：ハンバーガーメニュー（アニメーション対応） */
+    .menu-toggle {
+      cursor: pointer;
+      position: absolute;
+      top: 16.6px;
+      right: 15.8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 14px;
+      height: 9px;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 14px;
+      height: 1px;
+      background-color: black;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    /* 線の間隔を完全に均等（2px） */
+    .menu-toggle span:nth-child(2) {
+      margin: 2px 0;
+    }
+
+    /* ハンバーガーメニュー → × に変形（左右対称） */
+    .menu-container.expanded .menu-toggle span:nth-child(1) {
+      transform: translateY(4px) rotate(45deg);
+    }
+
+    .menu-container.expanded .menu-toggle span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-container.expanded .menu-toggle span:nth-child(3) {
+      transform: translateY(-4px) rotate(-45deg);
+    }
+
+    /* メニューアイテム（展開 & 閉じるアニメーション） */
+    .menu-content {
+      opacity: 0;
+      text-align: left;
+      padding: 0 20px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, padding 0.4s ease-in-out;
+    }
+
+    .menu-container.expanded .menu-content {
+      opacity: 1;
+      max-height: 300px;
+      padding: 10px 20px;
+    }
+
+    .menu-container.closing .menu-content {
+      opacity: 0;
+      max-height: 0;
+      padding: 0 20px;
+    }
+
+
+    .menu-content a {
+      display: block;
+      font-size: 18.67px; /* 14pt ≒ 18.67px */
+      font-weight: normal;
+      line-height: 24px; /* 18pt ≒ 24px */
+      text-decoration: none;
+      color: #000000;
+      transition: color 0.3s ease;
+    }
+
+    .menu-content a:hover {
+      color: #808080;
+    }
+
+    /* Works, About, Goods, Contact, Instagram, Jp/En をボックス左側から102pxの位置に */
+    .menu-content .main-item {
+      padding-left: 95px;
+    }
+
+    /* Graphic, Book, Photograph, Movie をボックス左側から118pxの位置に */
+    .menu-content .sub-item {
+      padding-left: 105px;
+    }
+    
+
+    
+
+            @media (min-width: 960px) {
+                .taiyo{
+                    width: 96vw;
+                    margin-left: 2vw;
+                    margin-right: 2vw;
+                    margin-top: 60px;
+                    margin-bottom: -60px;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                }
+                .taiyo2{
+                    display: flex;
+                    justify-content: center; 
+                    margin-top: 120px;
+                    margin-bottom: 70px;
+                    align-items: center;
+                }
+                .taiyo3{
+                    width: 96vw;
+                    margin-left: 2vw;
+                    margin-right: 2vw;
+                    margin-top: 60px;
+                    margin-bottom: -60px;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                }
+                .content1{
+                    width: 64vw;
+                    margin-left: 0vw;
+                    margin-right: 0vw;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                }
+                .box1{
+                    width: 31vw;
+                    margin-left: 0.5vw;
+                    margin-right: 0.5vw;
+                    margin-top: 22px;
+                    margin-bottom: 22px;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                .box1-1{
+                    width: 26vw;
+                    margin-left: 5.5vw;
+                    margin-right: 0.5vw;
+                    margin-top: 22px;
+                    margin-bottom: 22px;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                .box2{
+                    width: 31vw;
+                    margin-left: 0.5vw;
+                    margin-right: 0.5vw;
+                    margin-top: 0.5vw;
+                    margin-bottom: 0.5vw;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                .box2-1{
+                    width: 31vw;
+                    margin-left: 0.5vw;
+                    margin-right: 0.5vw;
+                    margin-top: 47px;
+                    margin-bottom: 0.5vw;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                .box3{
+                    width: 63vw;
+                    margin-left: 0.5vw;
+                    margin-right: 0.5vw;
+                    margin-top: 0.5vw;
+                    margin-bottom: 0.5vw;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                .box4{
+                    width: 95vw;
+                    margin-left: 0.5vw;
+                    margin-right: 0.5vw;
+                    margin-top: 50px;
+                    margin-bottom: 0;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                
+                #photo1 {
+                    width: 31vw;
+                }
+                #photo2 {
+                    width: 63vw;
+                }
+                p1 {
+                    font-size: 8pt;
+                    margin-left: 0.3vw;
+                    margin-top: -10px;
+                    margin-bottom: 10px;
+                }
+                p2 {
+                    font-size: 14pt;
+                    margin-left: 0.3vw;
+                    margin-top: 0px;
+                    margin-bottom: 0px;
+                }
+                p3 {
+                    font-size: 11pt;
+                    margin-left: 0.3vw;
+                    margin-top: 25px;
+                    margin-bottom: 0px;
+                    line-height:1.7;
+
+                }
+                p4 {
+                    font-size: 8pt;
+                    margin-left: 0.3vw;
+                    margin-top: -10px;
+                    margin-bottom: 10px;
+                }
+                p5 {
+                    font-size: 10pt;
+                    margin-left: 0.3vw;
+                    margin-top: 0px;
+                    margin-bottom: 0px;
+                }
+                p6{
+                    font-size: 9pt;
+                }
+                p7{
+                    font-size: 8pt;
+                    margin-left: 2pt;
+                }
+                
+                a {
+                    text-decoration: none;
+                    color: black;
+                    transition: color 0.2s ease-in-out;
+                }
+                a:hover{
+                    color: #808080;
+                }
+            }
+            @media (max-width: 960px) and (min-width: 520px){
+                .taiyo{
+                    width: 96vw;
+                    margin-left: 2vw;
+                    margin-right: 2vw;
+                    margin-top: 60px;
+                    margin-bottom: -60px;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                .taiyo2{
+                    display: flex;
+                    justify-content: center; 
+                    margin-top: 110px;
+                    margin-bottom: 60px;
+                    align-items: center;
+                }
+                .taiyo3{
+                    width: 96vw;
+                    margin-left: 2vw;
+                    margin-right: 2vw;
+                    margin-top: 60px;
+                    margin-bottom: -60px;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                }
+                .content1{
+                    width: 48vw;
+                    margin-left: 0vw;
+                    margin-right: 0vw;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                
+                .box1{
+                    width: 47vw;
+                    margin-left: 0.5vw;
+                    margin-right: 0.5vw;
+                    margin-top: 22px;
+                    margin-bottom: 22px;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                .box1-1{
+                    width: 47vw;
+                    margin-left: 0.5vw;
+                    margin-right: 0.5vw;
+                    margin-top: 0;
+                    margin-bottom: 22px;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                .box2{
+                    width: 47vw;
+                    margin-left: 0.5vw;
+                    margin-right: 0.5vw;
+                    margin-top: 0.5vw;
+                    margin-bottom: 0.5vw;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                .box2-1{
+                    width: 47vw;
+                    margin-left: 0.5vw;
+                    margin-right: 0.5vw;
+                    margin-top: 47px;
+                    margin-bottom: 0.5vw;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                .box3{
+                    width: 95vw;
+                    margin-left: 0.5vw;
+                    margin-right: 0.5vw;
+                    margin-top: 0.5vw;
+                    margin-bottom: 0.5vw;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                .box4{
+                    width: 95vw;
+                    margin-left: 0.5vw;
+                    margin-right: 0.5vw;
+                    margin-top: 50px;
+                    margin-bottom: 0;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                
+                #photo1 {
+                    width: 47vw;
+                }
+                #photo2 {
+                    width: 95vw;
+                }
+                p1 {
+                    font-size: 8pt;
+                    margin-left: 0.3vw;
+                    margin-top: -10px;
+                    margin-bottom: 10px;
+                }
+                p2 {
+                    font-size: 13pt;
+                    margin-left: 0.3vw;
+                    margin-top: 0px;
+                    margin-bottom: 0px;
+                }
+                p3 {
+                    font-size: 10pt;
+                    margin-left: 0.3vw;
+                    margin-top: 25px;
+                    margin-bottom: 0px;
+                    line-height:1.7;
+
+                }
+                p4 {
+                    font-size: 8pt;
+                    margin-left: 0.3vw;
+                    margin-top: -10px;
+                    margin-bottom: 10px;
+                }
+                p5 {
+                    font-size: 10pt;
+                    margin-left: 0.3vw;
+                    margin-top: 0px;
+                    margin-bottom: 0px;
+                }
+                p6{
+                    font-size: 9pt;
+                }
+                p7{
+                    font-size: 8pt;
+                    margin-left: 2pt;
+                }
+                
+                a {
+                    text-decoration: none;
+                    color: black;
+                    transition: color 0.2s ease-in-out;
+                }
+                a:hover{
+                    color: #808080;
+                }
+            }
+            @media (max-width: 520px){
+                .taiyo{
+                    width: 94vw;
+                    margin-left: 3vw;
+                    margin-right: 3vw;
+                    margin-top: 60px;
+                    margin-bottom: -60px;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                .taiyo2{
+                    display: flex;
+                    justify-content: center; 
+                    margin-top: 110px;
+                    margin-bottom: 50px;
+                    align-items: center;
+                }
+                .taiyo3{
+                    width: 94vw;
+                    margin-left: 3vw;
+                    margin-right: 3vw;
+                    margin-top: 60px;
+                    margin-bottom: -60px;
+                    display: flex;
+                    flex-direction: column-reverse;
+                    flex-wrap: wrap;
+                }
+                .content1{
+                    width: 94vw;
+                    margin-left: 0vw;
+                    margin-right: 0vw;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                
+                .box1{
+                    width: 90vw;
+                    margin-left: 2vw;
+                    margin-right: 2vw;
+                    margin-top: 22px;
+                    margin-bottom: 22px;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                .box1-1{
+                    width: 90vw;
+                    margin-left: 2vw;
+                    margin-right: 2vw;
+                    margin-top: 10px;
+                    margin-bottom: 22px;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                .box2{
+                    width: 90vw;
+                    margin-left: 2vw;
+                    margin-right: 2vw;
+                    margin-top: 2vw;
+                    margin-bottom: 2vw;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                .box2-1{
+                    width: 90vw;
+                    margin-left: 2vw;
+                    margin-right: 2vw;
+                    margin-top: 42px;
+                    margin-bottom: 2vw;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                .box3{
+                    width: 90vw;
+                    margin-left: 2vw;
+                    margin-right: 2vw;
+                    margin-top: 2vw;
+                    margin-bottom: 2vw;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                .box4{
+                    width: 90vw;
+                    margin-left: 2vw;
+                    margin-right: 2vw;
+                    margin-top: 50px;
+                    margin-bottom: 0vw;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                }
+                
+                #photo1 {
+                    width: 90vw;
+                }
+                #photo2 {
+                    width: 90vw;
+                }
+                p1 {
+                    font-size: 8pt;
+                    margin-left: 0.3vw;
+                    margin-top: -12px;
+                    margin-bottom: 10px;
+                }
+                p2 {
+                    font-size: 12pt;
+                    margin-left: 0.3vw;
+                    margin-top: 0px;
+                    margin-bottom: 0px;
+                }
+                p3 {
+                    font-size: 9pt;
+                    margin-left: 0.3vw;
+                    margin-top: 0px;
+                    margin-bottom: 0px;
+                    line-height:1.7;
+
+                }
+                p4 {
+                    font-size: 8pt;
+                    margin-left: 0.3vw;
+                    margin-top: -12px;
+                    margin-bottom: 10px;
+                }
+                p5 {
+                    font-size: 9pt;
+                    margin-left: 0.3vw;
+                    margin-top: 0px;
+                    margin-bottom: 0px;
+                }
+                p6{
+                    font-size: 9pt;
+                }
+                p7{
+                    font-size: 8pt;
+                    margin-left: 2pt;
+                }
+                
+                a {
+                    text-decoration: none;
+                    color: black;
+                    transition: color 0.2s ease-in-out;
+                }
+                a:hover{
+                    color: #808080;
+                }
+            }
+            
+        </style>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+    </head>
+    <header>
+
+        <!-- メニューコンテナ -->
+        <div class="menu-container">
+          <!-- ヘッダーエリア -->
+          <div class="menu-header">
+            <!-- 左：ロゴ -->
+            <div class="logo">
+              <img src="logo.png" alt="Logo">
+            </div>
+      
+            <!-- 中央：タイトル -->
+            <div class="title">Photograph　山形</div>
+      
+            <!-- 右：ハンバーガーメニュー（×アニメーション対応） -->
+            <div class="menu-toggle">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+      
+          <!-- メニューアイテム -->
+          <div class="menu-content">
+            <a href="index.html" class="main-item">Works</a>
+            <a href="graphic.html" class="sub-item">Graphic</a>
+            <a href="book.html" class="sub-item">Book</a>
+            <a href="photograph.html" class="sub-item">Photograph</a>
+            <a href="exhibition.html" class="sub-item">Exhibition</a>
+            <a href="about.html" class="main-item">About</a>
+            <a href="good.html" class="main-item">Goods</a>
+            <a href="contact.html" class="main-item">Contact</a>
+            <a href="https://www.instagram.com/taiyoenergycompany/" class="main-item">Instagram</a>
+            <a href="specialsite.html" class="main-item">Ēchō Special site</a>
+          </div>
+        </div>
+      
+        <script>
+          const menuContainer = document.querySelector('.menu-container');
+         
+
+          menuContainer.addEventListener('click', () => {
+            if (menuContainer.classList.contains('expanded')) {
+              menuContainer.classList.add('closing');
+             
+              setTimeout(() => {
+                menuContainer.classList.remove('expanded', 'closing');
+              }, 400);
+            } else {
+              menuContainer.classList.add('expanded');
+              
+            }
+            
+            
+          });
+          
+          
+        </script>
+      
+    </header>
+    <body>
+        <div class="app">
+            <div class="taiyo">
+                <div class="box4">
+                    <p1>Photograph　山形</p1>
+                        <p2></p2>
+                </div>
+            </div>
+            <div class="taiyo">
+                <div class="box2">
+                    <img src="s6-4-1.png" alt="photograph" id="photo1">
+                </div>
+                <div class="box2">
+                    <img src="s6-4-2.png" alt="photograph" id="photo1">
+                </div>
+                <div class="box2">
+                    <img src="s6-4-3.png" alt="photograph" id="photo1">
+                </div>
+            </div>
+            <div class="taiyo">
+                <div class="box3">
+                    <img src="s6-11.png" alt="photograph" id="photo2">
+                </div>
+            </div>
+            <div class="taiyo2"><!--cmark! -->
+                <!-- cmark --><br><p6>©</p6><p7> 2025 YASUNOBUIDEI</p7>
+            </div>
+        </div>
+    </body>
+</html>
